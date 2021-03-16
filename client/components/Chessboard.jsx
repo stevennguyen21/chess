@@ -50,7 +50,7 @@ export default function Chessboard() {
                     image = p.image
                 }
             })
-            board.push(<Tile number={number} image={image}/>)
+            board.push(<Tile key={`${i},${j}`} number={number} image={image}/>)
         }
     }
     return (
