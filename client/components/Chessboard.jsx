@@ -37,6 +37,34 @@ for (let p = 0; p < 2; p++) {
     
 }
 
+let activePiece = null;
+
+const grabPiece = (e) => {
+    if (e.target.className === 'chess-piece') {
+        activePiece = e.target;
+        const x = e.clientX - 50;
+        const y = e.clientY - 50;
+        e.target.style.position = "absolute";
+        e.target.style.left = `${x}px`;
+        e.target.style.top = `${y}px`;
+    }
+}
+
+const movePiece = (e) => {
+    if (activePiece) {
+        const x = e.clientX - 50;
+        const y = e.clientY - 50;
+        activePiece.style.position = "absolute";
+        activePiece.style.left = `${x}px`;
+        activePiece.style.top = `${y}px`;
+    }
+}
+
+const dropPiece = (e) => {
+    if (activePiece) {
+        activePiece = null;
+    }
+}
 
 
 export default function Chessboard() {
@@ -54,6 +82,13 @@ export default function Chessboard() {
         }
     }
     return (
-        <div className="chessboard">{board}</div>
+        <div 
+            onMouseDown={e => grabPiece(e)} 
+            onMouseMove={e => movePiece(e)} 
+            onMouseUp={e => dropPiece(e)}
+            className="chessboard"
+        >
+            {board}
+        </div>
     )
 };

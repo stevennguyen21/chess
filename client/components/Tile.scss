@@ -1,6 +1,8 @@
+$measure: 100px;
+
 .tile {
-    width: 100px;
-    height: 100px;
+    width: $measure;
+    height: $measure;
     display: grid;
     place-content: center;
 }
@@ -17,10 +19,18 @@
     width: 80px;
 }
 
-.inner-tile {
-    height: 100px;
-    width: 100px;
+.chess-piece {
+    height: $measure;
+    width: $measure;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 80px;
+}
+
+.chess-piece:hover {
+    cursor: grab;
+}
+
+.chess-piece:active {
+    cursor: grabbing;
 }
