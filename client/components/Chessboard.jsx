@@ -5,9 +5,11 @@ import Tile from './Tile.jsx';
 
 export default function Chessboard() {
     const chessboardRef = useRef(null);
+    const [activePiece, setActivePiece] = useState(null);
+    const [xPos, setXPos] = useState(0);
+    const [yPos, setYPos] = useState(0);
     const [pieces, setPieces] = useState([]);
     
-    let activePiece = null;
     
     useEffect(() => {
         const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -49,8 +51,11 @@ export default function Chessboard() {
     }, [])
     
     const grabPiece = (e) => {
-        if (e.target.className === 'chess-piece') {
-            activePiece = e.target;
+        const chessboard = chessboardRef.current;
+        if (e.target.className === 'chess-piece' && chessboard) {
+            setXPos(Math.floor((e.clientX - chessboard.offsetLeft) / 100));
+            setYPos(Math.abs(Math.ceil((e.clientY - chessboard.offsetTop - 800) / 100)));
+            setActivePiece(e.target);
             const x = e.clientX - 50;
             const y = e.clientY - 50;
             e.target.style.position = "absolute";
@@ -97,19 +102,22 @@ export default function Chessboard() {
         if (activePiece && chessboard) {
             // these const make mapping the grid to start at 0, 0 and increment in 1's
             const x = Math.floor((e.clientX - chessboard.offsetLeft) / 100);
-            const y = Math.floor((e.clientY - chessboard.offsetTop) / 100);
+            // const y needs extra math to take in the fact that the board is rendered from bottom left to top right so
+            // 0 is bottom while 8 is top, so subtracting the board length and then reversing the negative will get the number
+            const y = Math.abs(Math.ceil((e.clientY - chessboard.offsetTop - 800) / 100));
             console.log(x, y);
             setPieces((value) => {
                 const pieces = value.map((p) => {
-                    if (p.x == 0 && p.y == 0) {
-                        p.x == 5;
+                    if (p.x === xPos && p.y === yPos) {
+                        p.x = x;
+                        p.y = y;
                     }
                     return p;
                 });
                 return pieces;
             })
 
-            activePiece = null;
+            setActivePiece(null);
         }
     }
     
