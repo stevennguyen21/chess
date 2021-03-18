@@ -6,13 +6,13 @@ export default function Tile(props) {
         return (
             <div className="tile white-tile">
                 {/* if image is null, no need to render is logic behind this statement */}
-                {props.image && <div className="chess-piece" style={{backgroundImage: `url(${props.image})`}} />}
+                {props.image && <div className={`chess-piece ${props.type} ${props.color}`} style={{backgroundImage: `url(${props.image})`}} />}
             </div>
         )
     } else {
         return (
             <div className="tile black-tile">
-                {props.image && <div className="chess-piece" style={{backgroundImage: `url(${props.image})`}} />}
+                {props.image && <div className={`chess-piece ${props.type} ${props.color}`} style={{backgroundImage: `url(${props.image})`}} />}
             </div>
         )
     }
