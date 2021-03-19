@@ -1,34 +1,58 @@
 export default class LegalMoves {
-    isValidMove(previousX, previousY, x, y, type, color) {
+
+    isTileOccupied(x, y, stateOfBoard) {
+        const board = stateOfBoard.find(p => p.x === x && p.y === y);
+        if (board) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    isValidMove(previousX, previousY, x, y, type, color, stateOfBoard) {
         console.log("checking move of ", previousY);
 
         // pawn
         if (type === 'pawn') {
             if (color === 'white') {
                 if (previousY === 1) {
-                    if (previousX === x && (y - previousY === 1 || y - previousY === 2)) {
-                        console.log('valid')
-                        return true;
-                    } 
+                    if (previousX === x && (y - previousY === 1)) {
+                        if (!this.isTileOccupied(x, y, stateOfBoard)) {
+                            return true;
+                        }
+                    } else if (previousX === x && (y - previousY === 2)) {
+                        if (!this.isTileOccupied(x, y, stateOfBoard) && !this.isTileOccupied(x, y - 1, stateOfBoard)) {
+                            return true;
+                        }
+                    }
                 } else {
                     if (previousX === x && y - previousY === 1) {
-                        console.log('valid');
-                        return true;
+                        if (!this.isTileOccupied(x, y, stateOfBoard)) {
+                            return true;
+                        }
                     }
                 }
             } else {
                 if (previousY === 6) {
-                    if (previousX ===x && ((previousY - y === 1) || Math.abs(previousY - y === 2))) {
-                        console.log('valid');
-                        return true;
+                    if (previousX ===x && ((previousY - y === 1))) {
+                        if (!this.isTileOccupied(x, y, stateOfBoard)) {
+                            return true;
+                        }
+                    } else if (previousX === x && ((previousY - y === 2))) {
+                        if (!this.isTileOccupied(x, y, stateOfBoard) && !this.isTileOccupied(x, y + 1, stateOfBoard)) {
+                            return true;
+                        }
                     }
                 } else {
                     if (previousX === x && ((previousY - y === 1))) {
-                        return true;
+                        if (!this.isTileOccupied(x, y, stateOfBoard)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
         return false;
     }
+
 }

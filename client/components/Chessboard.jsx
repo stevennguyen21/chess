@@ -121,10 +121,11 @@ export default function Chessboard() {
                 const pieces = value.map((p) => {
                     
                     if (p.x === xPos && p.y === yPos) {
-                        if (legalMoves.isValidMove(xPos, yPos, x, y, type, color)) {
+                        if (legalMoves.isValidMove(xPos, yPos, x, y, type, color, value)) {
                             p.x = x;
                             p.y = y;
                         } else {
+                            // makes the piece snap back if not valid move
                             activePiece.style.position = 'relative';
                             activePiece.style.removeProperty('top');
                             activePiece.style.removeProperty('left');
