@@ -25,6 +25,10 @@ export default class LegalMoves {
                 if (!this.isTileOccupied(x, y, stateOfBoard)) {
                     return true;
                 }
+            } else if (Math.abs(x - previousX) === 1 && y - previousY === pawnDirection) { // this is the attacking logic
+                if (this.isTileOccupied(x, y, stateOfBoard)) {
+                    return true;
+                }
             }
         }
         return false;
