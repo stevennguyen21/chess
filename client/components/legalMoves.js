@@ -9,8 +9,18 @@ export default class LegalMoves {
         }
     }
 
+    isTileOccupiedByOpponent(x, y, stateOfBoard, color) {
+        const piece = stateOfBoard.find((p) => p.x === x && p.y === y && p.color !== color);
+        
+        if (piece) {
+            console.log('opponent ', piece);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     isValidMove(previousX, previousY, x, y, type, color, stateOfBoard) {
-        console.log("checking move of ", previousY);
 
         // pawn
         if (type === 'pawn') {
@@ -26,7 +36,7 @@ export default class LegalMoves {
                     return true;
                 }
             } else if (Math.abs(x - previousX) === 1 && y - previousY === pawnDirection) { // this is the attacking logic
-                if (this.isTileOccupied(x, y, stateOfBoard)) {
+                if (this.isTileOccupiedByOpponent(x, y, stateOfBoard, color)) {
                     return true;
                 }
             }

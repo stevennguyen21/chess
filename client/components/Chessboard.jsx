@@ -108,35 +108,40 @@ export default function Chessboard() {
         let chessboard = chessboardRef.current;
         let type = e.target.className.split(' ')[1];
         let color = e.target.className.split(' ')[2];
-
         if (activePiece && chessboard) {
             // these const make mapping the grid to start at 0, 0 and increment in 1's
             const x = Math.floor((e.clientX - chessboard.offsetLeft) / 100);
             // const y needs extra math to take in the fact that the board is rendered from bottom left to top right so
             // 0 is bottom while 8 is top, so subtracting the board length and then reversing the negative will get the number
             const y = Math.abs(Math.ceil((e.clientY - chessboard.offsetTop - 800) / 100));
-
+            const currentPiece = pieces.find(p => p.x === xPos && p.y === yPos);
             
-            setPieces((value) => {
-                const pieces = value.map((p) => {
-                    
-                    if (p.x === xPos && p.y === yPos) {
-                        if (legalMoves.isValidMove(xPos, yPos, x, y, type, color, value)) {
-                            p.x = x;
-                            p.y = y;
-                        } else {
-                            // makes the piece snap back if not valid move
-                            activePiece.style.position = 'relative';
-                            activePiece.style.removeProperty('top');
-                            activePiece.style.removeProperty('left');
-                        }
-                    } 
-                    return p;
-                });
-                return pieces;
-            })
-
+            if (currentPiece) {
+                const validMove = legalMoves.isValidMove(xPos, yPos, x, y, currentPiece.type, currentPiece.color, pieces);
+                
+                if (validMove) {
+                    const updatedPieces = pieces.reduce((results, piece) => {
+                        if (piece.x === xPos && piece.y === yPos) {
+                            piece.x = x;
+                            piece.y = y;
+                            results.push(piece);
+                        } else if (!(piece.x === x && piece.y === y)) {
+                           results.push(piece);
+                        }  
+                        return results;
+                    }, []);
+    
+                    setPieces(updatedPieces);
+    
+                } else {
+                    activePiece.style.position = 'relative';
+                    activePiece.style.removeProperty('top');
+                    activePiece.style.removeProperty('left');
+                }
+            }
+    
             setActivePiece(null);
+
         }
     }
     
