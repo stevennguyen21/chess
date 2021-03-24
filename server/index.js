@@ -7,10 +7,11 @@ const io = require('socket.io')(http);
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
-    console.log('new connection');
 
-    socket.on('message', (msg) => {
-        console.log('get message from client ', msg);
+
+    socket.on('move', (msg) => {
+
+        socket.broadcast.emit('move', msg);
     })
 })
 

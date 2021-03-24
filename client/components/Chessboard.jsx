@@ -3,6 +3,9 @@ import './Chessboard.scss';
 import Tile from './Tile.jsx';
 import LegalMoves from './legalMoves.js';
 
+const socket = io();
+
+
 export default function Chessboard() {
     const chessboardRef = useRef(null);
     const [activePiece, setActivePiece] = useState(null);
@@ -11,6 +14,9 @@ export default function Chessboard() {
     const [pieces, setPieces] = useState([]);
     const legalMoves = new LegalMoves();
     
+    socket.on('move', (msg) => {
+        setPieces(msg);
+    })
     
     useEffect(() => {
         const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -130,7 +136,7 @@ export default function Chessboard() {
                         }  
                         return results;
                     }, []);
-    
+                    socket.emit("move", updatedPieces);
                     setPieces(updatedPieces);
     
                 } else {

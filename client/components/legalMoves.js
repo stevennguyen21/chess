@@ -41,6 +41,15 @@ export default class LegalMoves {
                 }
             }
         }
+
+        if (type === 'bishop') {
+            const bishopDirection = (color === 'white') ? 1 : -1;
+            
+            const diagonal = Math.abs(x - previousX) === Math.abs(y - previousY);
+            if (diagonal) {
+                return true;
+            } 
+        }
         return false;
     }
 
