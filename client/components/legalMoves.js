@@ -50,6 +50,14 @@ export default class LegalMoves {
                 return true;
             } 
         }
+
+        if (type === 'knight') {
+            
+            const l_direction = Math.abs(x - previousX) + Math.abs(y - previousY) === 3;
+            if (l_direction) {
+                return true;
+            }
+        }
         return false;
     }
 
